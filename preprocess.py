@@ -23,6 +23,7 @@ import argparse
 from itertools import chain
 from datasets import load_dataset, load_from_disk
 from transformers import AutoTokenizer
+from huggingface_hub import login
 import time
 
 def parse_args():
@@ -77,6 +78,19 @@ def parse_args():
 def main():
     """Main preprocessing function."""
     args = parse_args()
+
+    # Check HuggingFace authentication
+    try:
+        print("Checking HuggingFace authentication...")
+        from huggingface_hub import whoami
+        user_info = whoami()
+        print(f"Authenticated as: {user_info['name']}")
+    except Exception as e:
+        print("❌ HuggingFace authentication required!")
+        print("Please run: huggingface-cli login")
+        print("Or set HF_TOKEN environment variable")
+        print("And accept the license at: https://huggingface.co/google/gemma-3-1b-pt")
+        raise e
 
     start_time = time.time()
     print(f"Starting preprocessing with dataset size: {args.dataset_size}")

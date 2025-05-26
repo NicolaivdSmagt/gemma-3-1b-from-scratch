@@ -22,6 +22,7 @@ import argparse
 import time
 import torch
 from transformers import AutoTokenizer, Gemma3ForCausalLM
+from huggingface_hub import whoami
 from typing import List, Dict, Any, Optional
 
 # Default Dutch prompts for testing
@@ -299,6 +300,18 @@ def run_batch_mode(model: Gemma3ForCausalLM, tokenizer: AutoTokenizer, prompts: 
 def main():
     """Main inference function."""
     args = parse_args()
+    
+    # Check HuggingFace authentication
+    try:
+        print("Checking HuggingFace authentication...")
+        user_info = whoami()
+        print(f"Authenticated as: {user_info['name']}")
+    except Exception as e:
+        print("❌ HuggingFace authentication required!")
+        print("Please run: huggingface-cli login")
+        print("Or set HF_TOKEN environment variable")
+        print("And accept the license at: https://huggingface.co/google/gemma-3-1b-pt")
+        raise e
     
     # Load model and tokenizer
     print(f"Loading model from {args.model_path}...")

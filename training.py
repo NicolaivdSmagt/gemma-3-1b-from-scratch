@@ -25,6 +25,7 @@ import argparse
 import math
 import time
 from datasets import load_from_disk
+from huggingface_hub import whoami
 from transformers import (
     AutoTokenizer,
     Gemma3TextConfig,
@@ -148,6 +149,18 @@ def parse_args():
 def main():
     """Main training function."""
     args = parse_args()
+    
+    # Check HuggingFace authentication
+    try:
+        print("Checking HuggingFace authentication...")
+        user_info = whoami()
+        print(f"Authenticated as: {user_info['name']}")
+    except Exception as e:
+        print("❌ HuggingFace authentication required!")
+        print("Please run: huggingface-cli login")
+        print("Or set HF_TOKEN environment variable")
+        print("And accept the license at: https://huggingface.co/google/gemma-3-1b-pt")
+        raise e
     
     # Create output directory
     model_output_dir = os.path.join(

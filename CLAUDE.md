@@ -14,6 +14,30 @@ The project consists of three main scripts:
 2. **training.py**: Trains a Gemma 3 1B model on the preprocessed data
 3. **inference.py**: Generates text using the trained Gemma 3 model
 
+## Prerequisites
+
+### HuggingFace Authentication
+
+**IMPORTANT**: The Gemma 3 1B model (`google/gemma-3-1b-pt`) is a gated model that requires authentication and license acceptance.
+
+Before running any scripts, you must:
+
+1. **Create a HuggingFace account** at https://huggingface.co/join
+2. **Accept the Gemma license** at https://huggingface.co/google/gemma-3-1b-pt
+3. **Create an access token** at https://huggingface.co/settings/tokens (with "Read" permissions)
+4. **Login via CLI**:
+   ```bash
+   # Install huggingface-hub if not already installed
+   pip install huggingface-hub
+   
+   # Login with your token
+   huggingface-cli login
+   # Or set environment variable
+   export HF_TOKEN="your_token_here"
+   ```
+
+**Note**: All scripts will automatically use your HuggingFace credentials once logged in. If you encounter authentication errors, ensure you've completed all steps above.
+
 ## Common Commands
 
 ### Data Preprocessing
@@ -113,6 +137,14 @@ The inference script provides:
 - **Solution**: Use `accelerate launch` instead of running `python training.py` directly. This enables proper multi-GPU distributed training across all 4 A10G GPUs
 - **Additional**: Reduce batch size to 2-4 and increase gradient accumulation steps to 8-16 for Gemma 3 1B
 - **Setup**: Run `accelerate config` first to configure for 4-GPU training, or use the default config created automatically
+
+**HuggingFace authentication errors:**
+- **Issue**: `Repository not found` or `Access denied` errors when loading Gemma 3 model/tokenizer
+- **Solution**: Ensure you've completed HuggingFace authentication steps above:
+  1. Accept license at https://huggingface.co/google/gemma-3-1b-pt
+  2. Run `huggingface-cli login` with a valid access token
+  3. Verify login with `huggingface-cli whoami`
+- **Alternative**: Set `HF_TOKEN` environment variable with your access token
 
 **Tokenizer compatibility issues:**
 - **Issue**: Vocabulary mismatch or encoding errors
