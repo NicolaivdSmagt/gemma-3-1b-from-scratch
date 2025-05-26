@@ -1,0 +1,23 @@
+# Core dependencies for Gemma 3 1B training pipeline
+torch>=2.0.0
+transformers>=4.50.0
+datasets>=2.14.0
+accelerate>=0.26.0
+tokenizers>=0.15.0
+
+# Data processing and utilities
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.65.0
+
+# Optional: Weights & Biases for experiment tracking
+wandb>=0.15.0
+
+# Optional: Additional optimizations
+flash-attn>=2.0.0  # For faster attention computation (if compatible)
+bitsandbytes>=0.41.0  # For quantization support
+
+# Development and testing
+pytest>=7.0.0
+black>=23.0.0
+flake8>=6.0.0
